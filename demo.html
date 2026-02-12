@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DEMO  - Sistema de Gestión Arbitral</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .font-black { font-weight: 800; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen">
+
+    <!-- SELECTOR DE ROL INICIAL (MODAL) -->
+    <div id="demo-selector" class="fixed inset-0 z-[100] bg-slate-900 flex items-center justify-center p-4">
+        <div class="bg-white p-10 rounded-[3rem] max-w-lg w-full text-center">
+            <img src="./Assets/ai-generated-volleyball-ball-isolated-on-transparent-background-free-png.png" class="w-20 h-20 mx-auto mb-6 rounded-2xl shadow-lg">
+            <h1 class="text-2xl font-black uppercase mb-2">Simulador de Sistema</h1>
+            <p class="text-slate-400 font-bold mb-8 uppercase text-[10px] tracking-widest">Seleccione una vista para la demostración</p>
+            <div class="space-y-4">
+                <button onclick="initDemo('admin')" class="w-full py-4 bg-slate-900 text-white rounded-2xl font-black uppercase text-xs tracking-widest hover:bg-blue-600 transition-all">Vista Administrador</button>
+                <button onclick="initDemo('user')" class="w-full py-4 bg-white border-2 border-slate-900 text-slate-900 rounded-2xl font-black uppercase text-xs tracking-widest hover:bg-slate-50 transition-all">Vista Árbitro</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- APP WRAPPER -->
+    <div id="app" class="hidden">
+        <!-- NAVBAR (IDÉNTICO AL ORIGINAL) -->
+        <nav class="bg-white border-b h-20 px-8 flex items-center justify-between sticky top-0 z-50">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-slate-900 rounded-xl overflow-hidden flex items-center justify-center">
+                    <img src="./Assets/ai-generated-volleyball-ball-isolated-on-transparent-background-free-png.png" class="w-full h-full object-cover">
+                </div>
+                <div>
+                    <p id="user-name" class="text-[10px] font-black uppercase leading-tight text-slate-800">Demo User</p>
+                    <p id="user-status" class="text-[8px] font-bold text-blue-600 uppercase mt-1 tracking-widest">MODO DEMOSTRACIÓN</p>
+                </div>
+            </div>
+            <div class="flex gap-4">
+                <button class="text-[9px] font-black uppercase text-slate-900 border-b-2 border-slate-900">Inicio</button>
+                <button class="text-[9px] font-black uppercase text-slate-400">Perfil</button>
+                <button onclick="location.reload()" class="text-red-500 font-bold uppercase text-[10px]">Salir</button>
+            </div>
+        </nav>
+
+        <div class="max-w-6xl mx-auto p-6" id="content">
+            <!-- El contenido se genera aquí -->
+        </div>
+    </div>
+
+    <script>
+        const categories = ["Sub 14", "Sub 16", "Sub 18", "A1", "A2", "A3", "Maxi Vóley"];
+        const roles = ["1er Árbitro", "2do Árbitro", "Planillero"];
+
+        function initDemo(role) {
+            document.getElementById('demo-selector').style.display = 'none';
+            document.getElementById('app').classList.remove('hidden');
+            
+            if(role === 'admin') renderAdmin();
+            else renderReferee();
+        }
+
+        function renderAdmin() {
+            document.getElementById('user-name').innerText = "ADMINISTRADOR (DEMO)";
+            document.getElementById('user-status').innerText = "ACCESO TOTAL";
+
+            document.getElementById('content').innerHTML = `
+                <div class="space-y-8 font-black">
+                    <!-- TABS SIMULADOS -->
+                    <div class="flex gap-2 overflow-x-auto pb-2">
+                        <button class="px-4 py-2 bg-slate-900 text-white rounded-xl text-[9px] font-black uppercase">General</button>
+                        <button class="px-4 py-2 bg-white text-slate-400 rounded-xl text-[9px] font-black uppercase border">Evaluaciones</button>
+                        <button class="px-4 py-2 bg-white text-slate-400 rounded-xl text-[9px] font-black uppercase border">Ranking</button>
+                    </div>
+
+                    <!-- CONTROL DE CUOTAS Y SANCIONES (Misma estructura que tu index.js) -->
+                    <div class="grid lg:grid-cols-2 gap-8">
+                        <div class="bg-white p-8 rounded-[2rem] border shadow-sm">
+                            <div class="flex justify-between items-center mb-6">
+                                <h2 class="text-xs font-black uppercase text-amber-600">Control de Cuotas</h2>
+                                <button class="text-[8px] font-black bg-emerald-50 text-emerald-600 px-3 py-1 rounded-lg uppercase">TODOS OK</button>
+                            </div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div class="p-3 bg-slate-50 border rounded-xl flex justify-between items-center text-[9px] font-black uppercase"><span>Juan Perez</span><span>✅</span></div>
+                                <div class="p-3 bg-slate-50 border rounded-xl flex justify-between items-center text-[9px] font-black uppercase"><span>Maria Garcia</span><span>❌</span></div>
+                                <div class="p-3 bg-slate-50 border rounded-xl flex justify-between items-center text-[9px] font-black uppercase"><span>Carlos Lopez</span><span>✅</span></div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-8 rounded-[2rem] border shadow-sm">
+                            <h2 class="text-xs font-black uppercase text-red-600 mb-6 uppercase">Sanciones / Sistema</h2>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div class="p-3 border rounded-xl bg-slate-50 font-black">
+                                    <div class="flex justify-between items-center mb-1"><span class="text-[9px] uppercase">Juan Perez</span><span class="text-[7px] bg-slate-200 px-1 rounded">OK</span></div>
+                                    <button class="w-full py-1.5 bg-slate-900 text-white rounded-lg text-[8px] uppercase">Sancionar</button>
+                                </div>
+                                <div class="p-3 border rounded-xl bg-red-50 font-black">
+                                    <div class="flex justify-between items-center mb-1"><span class="text-[9px] uppercase">Maria G.</span><span class="text-[7px] bg-red-500 text-white px-1 rounded font-black">SANC.</span></div>
+                                    <button class="w-full py-1.5 bg-slate-900 text-white rounded-lg text-[8px] uppercase">Quitar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- DISPONIBILIDAD -->
+                    <div class="bg-white p-8 rounded-[2rem] border shadow-sm">
+                        <h2 class="text-xs font-black uppercase mb-6 text-blue-600 uppercase">Disponibilidad de Árbitros</h2>
+                        <div class="grid md:grid-cols-3 gap-6">
+                            <div class="p-4 bg-slate-50 rounded-2xl border">
+                                <p class="text-[10px] font-black uppercase mb-2 border-b pb-1">Juan Perez</p>
+                                <p class="text-[8px] font-black uppercase text-blue-500">Lunes: <span class="text-slate-500">19, 20, 21</span></p>
+                                <p class="text-[8px] font-black uppercase text-blue-500">Viernes: <span class="text-slate-500">20, 21, 22</span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FORMULARIOS DE CARGA -->
+                    <div class="grid lg:grid-cols-2 gap-8 font-black">
+                        <div class="bg-white p-8 rounded-[2rem] border shadow-sm">
+                            <h2 class="text-xs font-black uppercase mb-6 text-emerald-600 tracking-widest uppercase">1. Cargar Encuentro</h2>
+                            <div class="grid grid-cols-2 gap-3">
+                                <input type="text" placeholder="LOCAL" class="p-3 bg-slate-50 border rounded-xl text-xs font-bold uppercase">
+                                <input type="text" placeholder="VISITANTE" class="p-3 bg-slate-50 border rounded-xl text-xs font-bold uppercase">
+                                <select class="p-3 bg-slate-50 border rounded-xl text-xs font-bold uppercase">
+                                    <option>-- CATEGORÍA --</option>
+                                    ${categories.map(c => `<option>${c}</option>`).join('')}
+                                </select>
+                                <input type="date" class="p-3 bg-slate-50 border rounded-xl text-xs font-bold">
+                                <button class="col-span-2 py-4 bg-emerald-600 text-white font-black rounded-xl uppercase text-[10px] shadow-lg">GUARDAR ENCUENTRO</button>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-8 rounded-[2rem] border shadow-sm">
+                            <h2 class="text-xs font-black uppercase mb-6 text-indigo-600 tracking-widest uppercase">2. Designar Equipo</h2>
+                            <div class="space-y-4">
+                                <select class="w-full p-4 bg-slate-900 text-white rounded-2xl text-xs font-bold uppercase">
+                                    <option>RIVADAVIA vs TRINITARIOS (A1)</option>
+                                </select>
+                                ${roles.map(r => `
+                                    <div class="flex items-center gap-2">
+                                        <label class="w-28 text-[8px] font-black uppercase text-slate-400">${r}:</label>
+                                        <select class="flex-1 p-2 bg-slate-50 border rounded-lg text-[9px] font-bold uppercase">
+                                            <option>Seleccionar disponible...</option>
+                                        </select>
+                                    </div>
+                                `).join('')}
+                                <button class="w-full py-4 bg-indigo-600 text-white font-black rounded-2xl uppercase text-[10px] shadow-lg">CONFIRMAR DESIGNACIÓN</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TABLA DE PARTIDOS (Lo que pediste) -->
+                    <div class="bg-white rounded-[2rem] border shadow-sm overflow-hidden text-slate-700">
+                        <div class="p-6 bg-slate-900 text-white flex justify-between items-center font-black">
+                            <h3 class="text-[10px] font-black uppercase tracking-widest">Planilla de Designaciones</h3>
+                            <button onclick="alert('Demo: Generando PDF...')" class="bg-white/10 px-4 py-2 rounded-xl text-[9px] font-black uppercase">EXPORTAR PDF</button>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-[10px] font-bold uppercase">
+                                <thead class="bg-slate-50 uppercase text-slate-400">
+                                    <tr>
+                                        <th class="p-4">Partido / Rama</th>
+                                        <th class="p-4">Categoría / Cancha</th>
+                                        <th class="p-4">Designación / Llegada</th>
+                                        <th class="p-4"></th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y">
+                                    <tr>
+                                        <td class="p-4 font-black">RIVADAVIA vs TRINITARIOS<br><span class="text-blue-500">Masculino</span></td>
+                                        <td class="p-4 font-black">A1<br><span class="text-slate-400">2023-11-10 | 21:00 HS</span><br><span class="text-indigo-600">Cancha 1</span></td>
+                                        <td class="p-4 space-y-1 font-black">
+                                            <div>1er Árbitro: Juan Perez <span class="text-emerald-500 font-black text-[8px]">[A TIEMPO]</span></div>
+                                            <div>2do Árbitro: Carlos Lopez <span class="text-amber-500 font-black text-[8px]">[PENDIENTE]</span></div>
+                                        </td>
+                                        <td class="p-4 text-right"><button class="text-red-400 font-black uppercase">BORRAR</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderReferee() {
+            document.getElementById('user-name').innerText = "JUAN PEREZ (ÁRBITRO)";
+            document.getElementById('user-status').innerText = "SOCIO: ACTIVO";
+
+            document.getElementById('content').innerHTML = `
+                <div class="grid lg:grid-cols-12 gap-10 font-black">
+                    <div class="lg:col-span-7 space-y-6 font-black">
+                        <!-- BANNER EVALUACION -->
+                        <div class="bg-blue-600 p-8 rounded-[2rem] text-white shadow-xl shadow-blue-100">
+                            <h3 class="font-black uppercase text-sm mb-1">Evaluación Técnica Disponible</h3>
+                            <p class="text-[9px] font-bold opacity-80 mb-4 uppercase">Reglamento Oficial 2024</p>
+                            <button class="px-8 py-3 bg-white text-blue-600 rounded-xl font-black text-[10px] uppercase">Comenzar</button>
+                        </div>
+
+                        <!-- DISPONIBILIDAD (Misma lógica visual de tu sistema) -->
+                        <div class="bg-white p-8 rounded-[2rem] border shadow-sm h-fit">
+                            <h2 class="text-xs font-black uppercase mb-6 text-blue-800 uppercase">Mi Disponibilidad</h2>
+                            <div class="space-y-4">
+                                ${['Lunes', 'Martes'].map(day => `
+                                    <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                                        <div class="flex justify-between items-center mb-3">
+                                            <p class="text-[8px] font-black uppercase text-slate-400">${day}</p>
+                                            <button class="text-[7px] font-black bg-blue-100 text-blue-600 px-2 py-1 rounded-md uppercase">Full Time</button>
+                                        </div>
+                                        <div class="grid grid-cols-8 gap-2">
+                                            ${['19', '20', '21', '22'].map(h => `
+                                                <div class="text-[8px] font-bold p-2 text-center border rounded-lg bg-white border-blue-600 text-blue-600 uppercase font-black">${h}:00</div>
+                                            `).join('')}
+                                        </div>
+                                    </div>
+                                `).join('')}
+                                <div class="grid grid-cols-2 gap-4 mt-6">
+                                    <button class="py-4 bg-slate-100 text-slate-400 font-black rounded-2xl uppercase text-[10px]">Limpiar Todo</button>
+                                    <button class="py-4 bg-blue-700 text-white font-black rounded-2xl uppercase text-[10px] shadow-lg">Guardar Horarios</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- DESIGNACIONES -->
+                    <div class="lg:col-span-5 space-y-6 font-black">
+                        <h2 class="text-xs font-black uppercase text-slate-800">Mis Designaciones / Check-in</h2>
+                        <div class="bg-white p-8 rounded-[2rem] border shadow-sm">
+                            <div class="flex justify-between items-center mb-6">
+                                <span class="px-3 py-1 bg-blue-50 text-blue-600 rounded-lg text-[8px] font-black uppercase">1er Árbitro</span>
+                                <span class="text-xs font-black">21:00 HS</span>
+                            </div>
+                            <p class="text-center font-black uppercase text-sm text-slate-800 mb-6">RIVADAVIA vs TRINITARIOS</p>
+                            <button onclick="alert('Demo: Ubicación GPS registrada')" class="w-full py-4 bg-slate-900 text-white rounded-2xl text-[9px] font-black uppercase shadow-lg hover:bg-blue-700">Registrar Llegada</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
